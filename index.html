@@ -132,7 +132,7 @@
     table.table-striped > tbody > tr:nth-of-type(odd) {
       background-color: rgba(0, 0, 0, 0.05);
     }
-    /* Responsive adjustments */
+    /* Responsive adjustments for Mobile */
     @media (max-width: 400px) {
       .cell {
         width: 80px;
@@ -142,6 +142,39 @@
       .game-container {
         width: 90%;
         padding: 1rem;
+      }
+    }
+    /* Responsive adjustments for Tablet */
+    @media (min-width: 401px) and (max-width: 767px) {
+      .game-container {
+        width: 350px;
+      }
+      .cell {
+        width: 90px;
+        height: 90px;
+        font-size: 2.2rem;
+      }
+    }
+    /* Responsive adjustments for PC */
+    @media (min-width: 768px) {
+      .game-container {
+        width: 400px;
+      }
+      .cell {
+        width: 120px;
+        height: 120px;
+        font-size: 3rem;
+      }
+    }
+    /* For larger PC screens */
+    @media (min-width: 1200px) {
+      .game-container {
+        width: 500px;
+      }
+      .cell {
+        width: 140px;
+        height: 140px;
+        font-size: 3.5rem;
       }
     }
   </style>
@@ -335,7 +368,7 @@
     // Make a move at the given index for the given player
     function makeMove(index, player) {
       gameState[index] = player;
-      const cell = document.querySelector(.cell[data-index='${index}']);
+      const cell = document.querySelector(`.cell[data-index='${index}']`);
       cell.innerHTML = player;
       cell.classList.add(player.toLowerCase());
       moveHistory.push({ index, player });
@@ -352,7 +385,7 @@
       if (message) {
         statusDisplay.innerHTML = message;
       } else {
-        statusDisplay.innerHTML = Player ${currentPlayer}'s Turn;
+        statusDisplay.innerHTML = `Player ${currentPlayer}'s Turn`;
       }
     }
 
@@ -368,16 +401,16 @@
         ) {
           roundWon = true;
           // Highlight winning cells
-          document.querySelector(.cell[data-index='${a}']).classList.add('winner');
-          document.querySelector(.cell[data-index='${b}']).classList.add('winner');
-          document.querySelector(.cell[data-index='${c}']).classList.add('winner');
+          document.querySelector(`.cell[data-index='${a}']`).classList.add('winner');
+          document.querySelector(`.cell[data-index='${b}']`).classList.add('winner');
+          document.querySelector(`.cell[data-index='${c}']`).classList.add('winner');
           break;
         }
       }
 
       if (roundWon) {
         let winnerName = currentPlayer === 'X' ? playerXInput.value : playerOInput.value;
-        updateStatus(${winnerName} Wins!);
+        updateStatus(`${winnerName} Wins!`);
         gameActive = false;
         updateScore(currentPlayer);
         updateLeaderboard(winnerName);
@@ -386,7 +419,7 @@
 
       // Check for tie
       if (!gameState.includes('')) {
-        updateStatus(Game Tied!);
+        updateStatus(`Game Tied!`);
         gameActive = false;
         return true;
       }
@@ -429,20 +462,20 @@
         // Undo computer move
         let lastMove = moveHistory.pop();
         gameState[lastMove.index] = '';
-        let cell = document.querySelector(.cell[data-index='${lastMove.index}']);
+        let cell = document.querySelector(`.cell[data-index='${lastMove.index}']`);
         cell.innerHTML = '';
         cell.classList.remove('o', 'winner');
         // Undo human move
         lastMove = moveHistory.pop();
         gameState[lastMove.index] = '';
-        cell = document.querySelector(.cell[data-index='${lastMove.index}']);
+        cell = document.querySelector(`.cell[data-index='${lastMove.index}']`);
         cell.innerHTML = '';
         cell.classList.remove('x', 'winner');
         currentPlayer = 'X';
       } else {
         let lastMove = moveHistory.pop();
         gameState[lastMove.index] = '';
-        const cell = document.querySelector(.cell[data-index='${lastMove.index}']);
+        const cell = document.querySelector(`.cell[data-index='${lastMove.index}']`);
         cell.innerHTML = '';
         cell.classList.remove(lastMove.player.toLowerCase(), 'winner');
         currentPlayer = lastMove.player;
